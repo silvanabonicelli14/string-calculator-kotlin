@@ -5,7 +5,7 @@ import org.junit.Assert
 
 class MainTest {
     @Test
-    fun add_EmptyString_ReturnZero() {
+    fun add_emptyString_ReturnZero() {
         Assert.assertEquals(0,StringCalculator().add(""))
     }
     @Test
@@ -13,7 +13,11 @@ class MainTest {
         Assert.assertEquals(1,StringCalculator().add("1"))
     }
     @Test
-    fun add_two_numbers_ReturnNumbers() {
+    fun add_two_numbers_ReturnSumOfTwoNumbers() {
         Assert.assertEquals(3,StringCalculator().add("1,2"))
+    }
+    @Test
+    fun add_numbers_ReturnNumbers() {
+        Assert.assertEquals(10,StringCalculator().add("1,2,3,4"))
     }
 }
