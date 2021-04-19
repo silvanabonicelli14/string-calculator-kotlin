@@ -83,4 +83,9 @@ class MainTest {
     fun add_one_more_separator_ReturnSumOfNumbers() {
         assertEquals(6,StringCalculator().add("//[@][#]\n1#2@3"))
     }
+
+    @Test
+    fun add_one_more_separator_with_lenght_maior_than_one_ReturnSumOfNumbers() {
+        assertEquals(10,StringCalculator().add("//[@@][!##][;]\n1!##2@@3;4"))
+    }
 }
