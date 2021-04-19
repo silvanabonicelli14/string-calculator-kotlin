@@ -53,4 +53,14 @@ class MainTest {
         val exception = assertThrows<Exception>{StringCalculator().add("//;\n1;2;-3;-4")}
         assertEquals("negatives not allowed: -3-4", exception.message)
     }
+
+    @Test
+    fun add_numbers_equal_to_1000_do_sum() {
+        assertEquals(1005,StringCalculator().add("//;\n1000;2;3"))
+    }
+
+    @Test
+    fun add_numbers_maior_than_1000_ignore_and_sum_the_others() {
+        assertEquals(5,StringCalculator().add("//;\n1001;2;3"))
+    }
 }

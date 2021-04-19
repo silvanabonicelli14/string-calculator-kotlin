@@ -3,6 +3,7 @@ package com.cgm.stringcalculator
 import com.cgm.stringcalculator.Constants.CUSTOM_SEPARATOR_START_FROM
 import com.cgm.stringcalculator.Constants.DEFAULT_SEPARATOR
 import com.cgm.stringcalculator.Constants.LINE_SEPARATOR
+import com.cgm.stringcalculator.Constants.MAX_VALUE_ALLOWED
 import com.cgm.stringcalculator.Constants.SPECIAL_CHAR_ALLOWED
 
 
@@ -15,7 +16,7 @@ class StringCalculator {
 
         checkForNegativeNumbers(listOfNumbers)
 
-        return listOfNumbers.sumBy{it.toInt()}
+        return listOfNumbers.filter{it.toInt() <= MAX_VALUE_ALLOWED}.sumBy{it.toInt()}
     }
 
     private fun checkForNegativeNumbers(listOfNumbers: List<String>) {
