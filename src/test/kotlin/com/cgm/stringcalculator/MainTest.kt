@@ -55,6 +55,12 @@ class MainTest {
     }
 
     @Test
+    fun add_negative_numbers_and_special_separator_with_square_ThrowException() {
+        val exception = assertThrows<Exception>{StringCalculator().add("//[;]\n1;2;-3;-4")}
+        assertEquals("negatives not allowed: -3-4", exception.message)
+    }
+
+    @Test
     fun add_numbers_equal_to_1000_do_sum() {
         assertEquals(1005,StringCalculator().add("//;\n1000;2;3"))
     }
@@ -64,7 +70,17 @@ class MainTest {
         assertEquals(5,StringCalculator().add("//;\n1001;2;3"))
     }
     @Test
-    fun add_with_len_separator_maior_of_two_ReturnSumOfNumbers() {
-        assertEquals(3,StringCalculator().add("//##\n1##2"))
+    fun add_with_len_separator_maior_of_one_ReturnSumOfNumbers() {
+        assertEquals(3,StringCalculator().add("//[##]\n1##2"))
+    }
+
+    @Test
+    fun add_one_separator_ReturnSumOfNumbers() {
+        assertEquals(6,StringCalculator().add("//[@]\n1@2@3"))
+    }
+
+    @Test
+    fun add_one_more_separator_ReturnSumOfNumbers() {
+        assertEquals(6,StringCalculator().add("//[@][#]\n1#2@3"))
     }
 }

@@ -12,7 +12,7 @@ class StringCalculator {
     fun add(numbers: String): Int {
         if (numbers.isNullOrEmpty()) return 0
 
-        val listOfNumbers = getListFromInputLine(numbers,getInputCharSeparator(numbers))
+        val listOfNumbers = getListFromInputLine(numbers,getInputCharSeparators(numbers))
 
         checkForNegativeNumbers(listOfNumbers)
 
@@ -28,17 +28,25 @@ class StringCalculator {
             throw Exception("negatives not allowed: $stringListOfNegativeNumbers")
     }
 
-    private fun getInputCharSeparator(inputString: String):String{
-        return if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM))
-                   inputString.substring(CUSTOM_SEPARATOR_START_FROM.length,inputString.indexOf(LINE_SEPARATOR))
-               else DEFAULT_SEPARATOR
+    private fun getInputCharSeparators(inputString: String):List<String>{
+        var listOfSeparators = mutableListOf<String>()
+        if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM))
+        {
+            val separatorLine = inputString.substring(CUSTOM_SEPARATOR_START_FROM.length,inputString.indexOf(LINE_SEPARATOR))
+            listOfSeparators = separatorLine.split("][") as MutableList<String>
+        }
+        else listOfSeparators.add(DEFAULT_SEPARATOR)
+        return listOfSeparators
+
     }
 
-    private fun getListFromInputLine(inputString: String, separatorChar: String) : List<String>{
+    private fun getListFromInputLine(inputString: String, separatorChar: List<String>) : List<String>{
         val stringListInputNumbers =
             if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM)) inputString.substring(inputString.indexOf(LINE_SEPARATOR) +1,inputString.length)
             else inputString
 
-        return stringListInputNumbers.replace(SPECIAL_CHAR_ALLOWED,separatorChar).split(separatorChar)
+        val stringSeparator = separatorChar.joinToString("|",).replace("[","").replace("]","")
+
+        return stringListInputNumbers.replace(SPECIAL_CHAR_ALLOWED, separatorChar[0]).split(stringSeparator.toRegex())
     }
 }
