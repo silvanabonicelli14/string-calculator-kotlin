@@ -63,4 +63,8 @@ class MainTest {
     fun add_numbers_maior_than_1000_ignore_and_sum_the_others() {
         assertEquals(5,StringCalculator().add("//;\n1001;2;3"))
     }
+    @Test
+    fun add_with_len_separator_maior_of_two_ReturnSumOfNumbers() {
+        assertEquals(3,StringCalculator().add("//##\n1##2"))
+    }
 }

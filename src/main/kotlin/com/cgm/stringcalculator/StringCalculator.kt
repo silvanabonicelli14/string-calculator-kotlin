@@ -30,7 +30,7 @@ class StringCalculator {
 
     private fun getInputCharSeparator(inputString: String):String{
         return if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM))
-                   inputString.substring(CUSTOM_SEPARATOR_START_FROM.length,CUSTOM_SEPARATOR_START_FROM.length+1)
+                   inputString.substring(CUSTOM_SEPARATOR_START_FROM.length,inputString.indexOf(LINE_SEPARATOR))
                else DEFAULT_SEPARATOR
     }
 
