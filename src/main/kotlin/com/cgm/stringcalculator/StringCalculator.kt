@@ -1,52 +1,57 @@
 package com.cgm.stringcalculator
 
 import com.cgm.stringcalculator.Constants.CUSTOM_SEPARATOR_START_FROM
-import com.cgm.stringcalculator.Constants.DEFAULT_SEPARATOR
 import com.cgm.stringcalculator.Constants.LINE_SEPARATOR
 import com.cgm.stringcalculator.Constants.MAX_VALUE_ALLOWED
-import com.cgm.stringcalculator.Constants.SPECIAL_CHAR_ALLOWED
+import com.cgm.stringcalculator.Constants.SEPARATOR_OF_SEPARATORS
+import com.cgm.stringcalculator.Constants.CUSTOM_SEPARATOR_POSTFIX
+import com.cgm.stringcalculator.Constants.CUSTOM_SEPARATOR_PREFIX
+import com.cgm.stringcalculator.Constants.defaultSeparatorsList
 
+class StringCalculator  {
+    private var numbersLine: String = ""
+    private var listOfNegativeNumbers = ""
+    private var separatorsList =  mutableListOf<String>()
 
-class StringCalculator {
+    fun add(inputString: String): Int {
+        if (inputString.isEmpty()) return 0
 
-    fun add(numbers: String): Int {
-        if (numbers.isNullOrEmpty()) return 0
+        initLines(inputString)
 
-        val listOfNumbers = getListFromInputLine(numbers,getInputCharSeparators(numbers))
+        val listOfNumbers = numbersLine.split(getRegexFromCustomSeparators())
 
         checkForNegativeNumbers(listOfNumbers)
 
-        return listOfNumbers.filter{it.toInt() <= MAX_VALUE_ALLOWED}.sumBy{it.toInt()}
+        return calculateSum(listOfNumbers)
+    }
+
+    private fun initLines(inputString: String) {
+        numbersLine = inputString
+        separatorsList = defaultSeparatorsList
+
+        if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM)) {
+            inputString
+                .substring(CUSTOM_SEPARATOR_START_FROM.length, inputString.indexOf(LINE_SEPARATOR))
+                .let{it.split(SEPARATOR_OF_SEPARATORS).toMutableList().apply {separatorsList.addAll(this)}}
+
+            numbersLine = inputString.substring(inputString.indexOf(LINE_SEPARATOR) + 1, inputString.length)
+        }
     }
 
     private fun checkForNegativeNumbers(listOfNumbers: List<String>) {
-
-        var stringListOfNegativeNumbers = ""
-        listOfNumbers.forEach { if (it.toInt() < 0) stringListOfNegativeNumbers += it }
-
-        if (stringListOfNegativeNumbers.isNotEmpty())
-            throw Exception("negatives not allowed: $stringListOfNegativeNumbers")
+        listOfNumbers.forEach { if (it.toInt() < 0) listOfNegativeNumbers += it }
+        listOfNegativeNumbers.apply {if (this.isNotEmpty()) throw Exception("negatives not allowed: $this")}
     }
 
-    private fun getInputCharSeparators(inputString: String):List<String>{
-        var listOfSeparators = mutableListOf<String>()
-        if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM))
-        {
-            val separatorLine = inputString.substring(CUSTOM_SEPARATOR_START_FROM.length,inputString.indexOf(LINE_SEPARATOR))
-            listOfSeparators = separatorLine.split("][") as MutableList<String>
-        }
-        else listOfSeparators.add(DEFAULT_SEPARATOR)
-        return listOfSeparators
-
+    private fun calculateSum(listOfNumbers: List<String>): Int {
+        return listOfNumbers.filter{it.toInt() <= MAX_VALUE_ALLOWED}.sumBy{it.toInt()}
     }
 
-    private fun getListFromInputLine(inputString: String, separatorChar: List<String>) : List<String>{
-        val stringListInputNumbers =
-            if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM)) inputString.substring(inputString.indexOf(LINE_SEPARATOR) +1,inputString.length)
-            else inputString
-
-        val stringSeparator = separatorChar.joinToString("|",).replace("[","").replace("]","")
-
-        return stringListInputNumbers.replace(SPECIAL_CHAR_ALLOWED, separatorChar[0]).split(stringSeparator.toRegex())
+    private fun getRegexFromCustomSeparators(): Regex {
+        return separatorsList
+            .joinToString("|")
+            .replace(CUSTOM_SEPARATOR_PREFIX, "")
+            .replace(CUSTOM_SEPARATOR_POSTFIX, "")
+            .toRegex()
     }
 }

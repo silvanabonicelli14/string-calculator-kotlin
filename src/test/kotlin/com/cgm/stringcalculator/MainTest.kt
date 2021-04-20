@@ -7,85 +7,94 @@ import java.lang.Exception
 
 class MainTest {
     @Test
-    fun add_emptyString_ReturnZero() {
+    fun `empty string return zero`() {
         assertEquals(0,StringCalculator().add(""))
     }
+
     @Test
-    fun add_one_number_ReturnNumber() {
+    fun `one number return number`() {
         assertEquals(1,StringCalculator().add("1"))
     }
+
     @Test
-    fun add_two_numbers_ReturnSumOfTwoNumbers() {
+    fun `two numbers return sum of two numbers`() {
         assertEquals(3,StringCalculator().add("1,2"))
     }
+
     @Test
-    fun add_numbers_ReturnSumOfNumbers() {
+    fun `numbers return sum of all numbers`() {
         assertEquals(10,StringCalculator().add("1,2,3,4"))
     }
 
     @Test
-    fun add_numbers_with_newLine_ReturnSumOfNumbers() {
+    fun `add numbers with newLine between numbers return sum of numbers`() {
         assertEquals(10,StringCalculator().add("1\n2,3,4"))
     }
 
     @Test
-    fun add_numbers_with_special_separator_ReturnSumOfNumbers() {
+    fun `numbers with special separator return sum of numbers`() {
         assertEquals(6,StringCalculator().add("//;\n1;2;3"))
+    }
+    @Test
+    fun `numbers with special separator in square brackets return sum of numbers`() {
+        assertEquals(6,StringCalculator().add("//[;]\n1;2;3"))
     }
 
     @Test
-    fun add_numbers_with_special_separator_and_new_line_ReturnSumOfNumbers() {
+    fun `numbers with special separator and new line return sum of numbers`() {
         assertEquals(6,StringCalculator().add("//;\n1\n2;3"))
     }
 
     @Test
-    fun add_with_special_separator_two_numbers_ReturnSumOfTwoNumbers() {
-        assertEquals(3,StringCalculator().add("//;\n1;2"))
-    }
-
-    @Test
-    fun add_negative_numbers_ThrowException() {
+    fun `negative numbers throw exception`() {
         val exception = assertThrows<Exception>{StringCalculator().add("1,2,-3,-4")}
         assertEquals("negatives not allowed: -3-4", exception.message)
     }
     @Test
-    fun add_negative_numbers_and_special_separator_ThrowException() {
+    fun `negative numbers and special separator throw exception`() {
         val exception = assertThrows<Exception>{StringCalculator().add("//;\n1;2;-3;-4")}
         assertEquals("negatives not allowed: -3-4", exception.message)
     }
 
     @Test
-    fun add_negative_numbers_and_special_separator_with_square_ThrowException() {
+    fun `negative numbers and special separator with square brackets throw exception`() {
         val exception = assertThrows<Exception>{StringCalculator().add("//[;]\n1;2;-3;-4")}
         assertEquals("negatives not allowed: -3-4", exception.message)
     }
 
     @Test
-    fun add_numbers_equal_to_1000_do_sum() {
+    fun `numbers equal to 1000 do sum`() {
         assertEquals(1005,StringCalculator().add("//;\n1000;2;3"))
     }
 
     @Test
-    fun add_numbers_maior_than_1000_ignore_and_sum_the_others() {
+    fun `numbers greater than 1000 ignore and sum the others`() {
         assertEquals(5,StringCalculator().add("//;\n1001;2;3"))
     }
+
     @Test
-    fun add_with_len_separator_maior_of_one_ReturnSumOfNumbers() {
+    fun `with len separator greater than 1 return sum of numbers`() {
         assertEquals(3,StringCalculator().add("//[##]\n1##2"))
     }
 
     @Test
-    fun add_one_separator_ReturnSumOfNumbers() {
+    fun `one separator return sum of numbers`() {
         assertEquals(6,StringCalculator().add("//[@]\n1@2@3"))
     }
 
     @Test
-    fun add_one_more_separator_ReturnSumOfNumbers() {
+    fun `one more separator return sum of numbers`() {
         assertEquals(6,StringCalculator().add("//[@][#]\n1#2@3"))
     }
 
     @Test
-    fun add_one_more_separator_with_lenght_maior_than_one_ReturnSumOfNumbers() {
+    fun `one more separator with length greater than one return sum of numbers`() {
         assertEquals(10,StringCalculator().add("//[@@][!##][;]\n1!##2@@3;4"))
+    }
+
+    @Test
+    fun `custom separator equal to line separator indicator return sum of numbers`() {
+        // ho specificato un separatore custom "//" esattamente uguale all'indicatore di inizio riga separatori "//"
+        assertEquals(10,StringCalculator().add("//[//][@@][!##][;]\n1//2@@3;4"))
     }
 }
