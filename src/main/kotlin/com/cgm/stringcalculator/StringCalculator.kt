@@ -18,7 +18,7 @@ class StringCalculator  {
 
         initLines(inputString)
 
-        val listOfNumbers = numbersLine.split(getRegexFromCustomSeparators())
+        var listOfNumbers = getListOfNumbers()
 
         checkForNegativeNumbers(listOfNumbers)
 
@@ -47,11 +47,10 @@ class StringCalculator  {
         return listOfNumbers.filter{it.toInt() <= MAX_VALUE_ALLOWED}.sumBy{it.toInt()}
     }
 
-    private fun getRegexFromCustomSeparators(): Regex {
-        return separatorsList
-            .joinToString("|")
-            .replace(CUSTOM_SEPARATOR_PREFIX, "")
-            .replace(CUSTOM_SEPARATOR_POSTFIX, "")
-            .toRegex()
+    private fun getListOfNumbers(): List<String> {
+        var arrayOfSeparators = arrayOf<String>()
+        separatorsList.indices.forEach { i ->
+            arrayOfSeparators += separatorsList[i].replace(CUSTOM_SEPARATOR_POSTFIX, "").replace(CUSTOM_SEPARATOR_PREFIX, "")
+        }.apply { return numbersLine.split(*arrayOfSeparators) }
     }
 }
