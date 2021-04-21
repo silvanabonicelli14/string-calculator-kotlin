@@ -3,8 +3,6 @@ package com.cgm.stringcalculator
 import org.junit.jupiter.api.Test
 import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 import java.lang.Exception
 
 class MainTest {
@@ -100,7 +98,12 @@ class MainTest {
         // ho specificato un separatore custom "//" esattamente uguale all'indicatore di inizio riga separatori "//"
         assertEquals(10,StringCalculator().add("//[//][@@][!##][;]\n1//2@@3;4"))
     }
-    //    @ParameterizedTest()
+
+    @Test
+    fun `one or more separators with special char and numbers`() {
+        assertEquals(10,StringCalculator().add("//[//][*][12][;]\n1//2123;4"))
+    }
+//    @ParameterizedTest()
 //    @MethodSource("inputStringProvider")
 //    fun `empty string return zero`(input: Pair<String, Int>) {
 //        assertEquals(input.second,StringCalculator().add(input.first))
