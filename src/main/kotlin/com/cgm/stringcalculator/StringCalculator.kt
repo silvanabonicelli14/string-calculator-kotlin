@@ -49,8 +49,8 @@ class StringCalculator  {
     }
 
     private fun calculateSum(): Int {
-        listOfNegativeNumbers.apply {
-            if (this.isNotEmpty()) throw Exception("negatives not allowed: $this")
+        listOfNegativeNumbers.takeIf { it ->
+            if (it.isNotEmpty()) throw Exception("negatives not allowed: $it")
             return listOfNumbers.filter{it.toInt() <= MAX_VALUE_ALLOWED}.sumBy{it.toInt()}
         }
     }
