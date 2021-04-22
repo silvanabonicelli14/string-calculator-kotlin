@@ -25,12 +25,12 @@ class StringCalculator  {
 
     private fun initLines(inputString: String) {
         numbersLine = inputString
+        separatorsList = defaultSeparatorsList
 
         if (inputString.startsWith(CUSTOM_SEPARATOR_START_FROM)) {
             getSeparatorsLine(inputString).split(SEPARATOR_OF_SEPARATORS).apply {separatorsList += this}
             numbersLine = inputString.substring(inputString.indexOf(LINE_SEPARATOR) + 1, inputString.length)
         }
-        separatorsList += defaultSeparatorsList
     }
 
     private fun getListOfNumbers(){
