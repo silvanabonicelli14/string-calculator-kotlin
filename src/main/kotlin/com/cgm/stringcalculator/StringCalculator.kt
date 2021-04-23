@@ -7,6 +7,7 @@ import com.cgm.stringcalculator.Constants.SEPARATOR_OF_SEPARATORS
 import com.cgm.stringcalculator.Constants.CUSTOM_SEPARATOR_SUFFIFIX
 import com.cgm.stringcalculator.Constants.CUSTOM_SEPARATOR_PREFIX
 import com.cgm.stringcalculator.Constants.defaultSeparatorsList
+import java.lang.IllegalArgumentException
 
 class StringCalculator  {
     private var numbersLine: String = ""
@@ -40,8 +41,7 @@ class StringCalculator  {
     private fun getSeparatorsLine(inputString: String) : String {
         return inputString
             .substring(CUSTOM_SEPARATOR_START_FROM.length, inputString.indexOf(LINE_SEPARATOR))
-            .removePrefix(CUSTOM_SEPARATOR_PREFIX)
-            .removeSuffix(CUSTOM_SEPARATOR_SUFFIFIX)
+            .removeSurrounding(CUSTOM_SEPARATOR_PREFIX,CUSTOM_SEPARATOR_SUFFIFIX)
     }
 
     private fun getListOfNegativeNumbers() {
@@ -50,7 +50,7 @@ class StringCalculator  {
 
     private fun calculateSum(): Int {
         listOfNegativeNumbers.takeIf { it ->
-            if (it.isNotEmpty()) throw Exception("negatives not allowed: $it")
+            if (it.isNotEmpty()) throw IllegalArgumentException("negatives not allowed: $it")
             return listOfNumbers.filter{it.toInt() <= MAX_VALUE_ALLOWED}.sumBy{it.toInt()}
         }
     }

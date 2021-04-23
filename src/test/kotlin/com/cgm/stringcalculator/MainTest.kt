@@ -1,13 +1,12 @@
 package com.cgm.stringcalculator
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.Assert.assertEquals
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.lang.Exception
-import java.util.stream.Stream
 
 class MainTest {
     @ParameterizedTest(name = "add function should return {1} for {0}")
@@ -47,8 +46,8 @@ class MainTest {
 
     companion object {
         @JvmStatic
-        fun sumNumbersArguments(): Stream<Arguments> =
-            Stream.of(
+        fun sumNumbersArguments(): List<Arguments> =
+            listOf(
                 Arguments.of("", 0),
                 Arguments.of("1", 1),
                 Arguments.of("1,2", 3),
@@ -56,16 +55,18 @@ class MainTest {
             )
 
         @JvmStatic
-        fun sumWithNewLineTestArguments(): Stream<Arguments> =
-            Stream.of(
+        fun sumWithNewLineTestArguments(): List<Arguments> =
+            listOf(
                 Arguments.of("1\n2,3,4", 10),
                 Arguments.of("1\n2\n3,4", 10)
             )
 
         @JvmStatic
-        fun sumWithCustomSeparatorsArguments(): Stream<Arguments> =
-            Stream.of(
+        fun sumWithCustomSeparatorsArguments(): List<Arguments> =
+            listOf(
                 Arguments.of("//;\n1;2;3", 6),
+                Arguments.of("//[\n1[2[3", 6),
+                Arguments.of("//]\n1]2]3", 6),
                 Arguments.of("//[;]\n1;2;3", 6),
                 Arguments.of("//;\n1\n2;3", 6),
                 Arguments.of("//[##]\n1##2", 3),
@@ -78,8 +79,8 @@ class MainTest {
             )
 
         @JvmStatic
-        fun sumWithNegativeArguments(): Stream<Arguments> =
-            Stream.of(
+        fun sumWithNegativeArguments(): List<Arguments> =
+            listOf(
                 Arguments.of("1,2,-3,-4", "negatives not allowed: -3-4"),
                 Arguments.of("//;\n1;2;-3;-4", "negatives not allowed: -3-4"),
                 Arguments.of("//[;]\n1;2;-3;-4", "negatives not allowed: -3-4"),
